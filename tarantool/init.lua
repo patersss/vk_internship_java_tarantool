@@ -1,11 +1,14 @@
 box.cfg{
     listen = tonumber(os.getenv('PORT')),
-    memtx_memory = 512 * 1024 * 1024,  -- 256 MB, хватит на 5M мелких записей
-    log_level = 5
+    memtx_memory = tonumber(os.getenv('TARANTOOL_MEMORY')) * 1024 * 1024,
+    log_level = tonumber(os.getenv('LOG_LEVEL'))
 }
 
+local user = os.getenv('USERNAME')
+local password = os.getenv('PASSWORD')
+
 box.once('init_user', function()
-    box.schema.user.create('kv_user', { password = 'kv_password' })
+    box.schema.user.create(user, { password = password })
     box.schema.user.grant('kv_user', 'read,write,execute,create,drop', 'universe')
 end)
 
