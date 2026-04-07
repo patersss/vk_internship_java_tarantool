@@ -9,9 +9,9 @@ public interface Repository {
 
     void delete(String key);
 
-    byte[] get(String key);
+    KeyValuePair get(String key);
 
-    int count();
+    long count();
 
     void range(String keySince, String keyTo, Consumer<KeyValuePair> consumer);
 }
