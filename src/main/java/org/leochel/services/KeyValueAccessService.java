@@ -6,7 +6,7 @@ import org.leochel.*;
 
 public class KeyValueAccessService extends KeyValueAccessServiceGrpc.KeyValueAccessServiceImplBase {
     @Override
-    public void put(KeyValuePair request, StreamObserver<PutResponse> responseObserver) {
+    public void put(KeyValuePair request, StreamObserver<Empty> responseObserver) {
         super.put(request, responseObserver);
     }
 
@@ -16,7 +16,7 @@ public class KeyValueAccessService extends KeyValueAccessServiceGrpc.KeyValueAcc
     }
 
     @Override
-    public void delete(Key request, StreamObserver<DeleteResponse> responseObserver) {
+    public void delete(Key request, StreamObserver<Empty> responseObserver) {
         super.delete(request, responseObserver);
     }
 

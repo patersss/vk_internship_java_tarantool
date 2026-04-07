@@ -8,11 +8,11 @@ option java_package = "org.leochel";
 package vk_internship;
 
 service KeyValueAccessService {
-  rpc Put(KeyValuePair) returns (PutResponse);
+  rpc Put(KeyValuePair) returns (google.protobuf.Empty);
 
   rpc Count(google.protobuf.Empty) returns (CountResponse);
 
-  rpc Delete(Key) returns (DeleteResponse);
+  rpc Delete(Key) returns (google.protobuf.Empty);
 
   rpc Get(Key) returns (KeyValuePair);
 
@@ -26,14 +26,6 @@ message KeyValuePair {
 
 message Key {
   string key = 1;
-}
-
-message DeleteResponse {
-  bool found = 1;
-}
-
-message PutResponse {
-  bool created = 1; // в случае если новая запись, то true, если перезапись, то false
 }
 
 message KeyRange {

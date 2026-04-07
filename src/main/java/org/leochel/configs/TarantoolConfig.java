@@ -1,13 +1,11 @@
 package org.leochel.configs;
 
-import
-import io.tarantool.balancer.TarantoolBalancer;
+
 import io.tarantool.client.box.TarantoolBoxClient;
 import io.tarantool.client.factory.TarantoolBoxClientBuilder;
 import io.tarantool.client.factory.TarantoolFactory;
 import io.tarantool.pool.InstanceConnectionGroup;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Logger;
 
@@ -19,10 +17,10 @@ public class TarantoolConfig {
     private final String password;
 
     public TarantoolConfig() {
-        this.host = env("HOST", "localhost");
-        this.port = Integer.parseInt(env("PORT", "3301"));
-        this.user = env("USER", "test_user");
-        this.password = env("PASSWORD", "test_password");
+        this.host = env("TARANTOOL_HOST", "localhost");
+        this.port = Integer.parseInt(env("TARANTOOL_PORT", "3301"));
+        this.user = env("TARANTOOL_USERNAME", "test_user");
+        this.password = env("TARANTOOL_PASSWORD", "test_password");
     }
 
     private static String env(String key, String defaultValue) {
@@ -31,6 +29,7 @@ public class TarantoolConfig {
     }
 
     public TarantoolBoxClient createClient() throws Exception {
+        System.out.println(this.host + " " + port + " " + user + " " + password);
         InstanceConnectionGroup connectionGroup = InstanceConnectionGroup.builder()
                 .withHost(host)
                 .withPort(port)

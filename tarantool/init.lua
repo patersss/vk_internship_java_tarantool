@@ -1,15 +1,15 @@
 box.cfg{
-    listen = tonumber(os.getenv('PORT')),
+    listen = tonumber(os.getenv('TARANTOOL_PORT')),
     memtx_memory = tonumber(os.getenv('TARANTOOL_MEMORY')) * 1024 * 1024,
-    log_level = tonumber(os.getenv('LOG_LEVEL'))
+    log_level = tonumber(os.getenv('TARANTOOL_LOG_LEVEL'))
 }
 
-local user = os.getenv('USERNAME')
-local password = os.getenv('PASSWORD')
+local user = os.getenv('TARANTOOL_USER_NAME')
+local password = os.getenv('TARANTOOL_USER_PASSWORD')
 
 box.once('init_user', function()
     box.schema.user.create(user, { password = password })
-    box.schema.user.grant('kv_user', 'read,write,execute,create,drop', 'universe')
+    box.schema.user.grant(user, 'read,write,execute,create,drop', 'universe')
 end)
 
 box.once('init_schema', function()

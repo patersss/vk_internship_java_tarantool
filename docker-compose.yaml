@@ -2,16 +2,17 @@ services:
   tarantool:
     image: tarantool/tarantool:3.2.3
     ports:
-      - "3001:3001"
+      - "3301:3301"
     volumes:
       - ./tarantool/init.lua:/opt/tarantool/init.lua
       - data:/var/lib/tarantool
-    command:
-      - tarantool /opt/tarantool/init.lua
+    command: ["tarantool", "/opt/tarantool/init.lua"]
     environment:
-      TARANTOOL_USER_NAME: ${USERNAME}
-      TARANTOOL_USER_PASSWORD: ${PASSWORD}
-      TARANTOOL_PORT: ${PORT}
+      TARANTOOL_USER_NAME: ${TARANTOOL_USERNAME}
+      TARANTOOL_USER_PASSWORD: ${TARANTOOL_PASSWORD}
+      TARANTOOL_PORT: ${TARANTOOL_PORT}
+      TARANTOOL_MEMORY: ${TARANTOOL_MEMORY}
+      TARANTOOL_LOG_LEVEL: ${TARANTOOL_LOG_LEVEL}
     healthcheck:
       test: [ "CMD", "tarantool", "-e", "require('net.box').connect('localhost:3301'):ping()" ]
       interval: 5s
