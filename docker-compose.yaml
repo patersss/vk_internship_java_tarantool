@@ -1,8 +1,8 @@
 services:
+  grpc-service:
+
   tarantool:
     image: tarantool/tarantool:3.2.3
-    ports:
-      - "3301:3301"
     volumes:
       - ./tarantool/init.lua:/opt/tarantool/init.lua
       - data:/var/lib/tarantool

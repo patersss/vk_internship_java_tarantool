@@ -10,10 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletionException;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 public class TarantoolRepository implements Repository {
-    private static final Logger logger = Logger.getLogger(TarantoolRepository.class.getName());
     private final TarantoolBoxClient client;
     private static final int PAGE_SIZE = 1000;
 
@@ -30,9 +28,6 @@ public class TarantoolRepository implements Repository {
                 client.call("kv_put", List.of(key, value)).join();
             }
         } catch (CompletionException e) {
-            logger.severe("Exception while put method with key: " + key
-                    + ", valueSize: " + (value == null ? "null" : value.length)
-                    + " " + e.getCause());
             throw new TarantoolOperationException("put", e.getCause());
         }
     }
@@ -42,8 +37,6 @@ public class TarantoolRepository implements Repository {
         try {
             client.call("kv_delete", List.of(key)).join();
         } catch (CompletionException e) {
-            logger.severe("Exception while delete method with key: " + key +
-                    " " + e.getCause());
             throw new TarantoolOperationException("delete", e.getCause());
         }
     }
@@ -62,8 +55,6 @@ public class TarantoolRepository implements Repository {
             }
 
         } catch (CompletionException e) {
-            logger.severe("Exception in get method with key: " + key +
-                    " " + e.getCause());
             throw new TarantoolOperationException("get", e.getCause());
         }
         return tupleToKeyValuePair(resultTuple);
@@ -84,9 +75,8 @@ public class TarantoolRepository implements Repository {
             }
 
             throw new IllegalStateException("Unexpected count result type: "
-                            + countResult.getClass().getName());
+                    + countResult.getClass().getName());
         } catch (CompletionException e) {
-            logger.severe("Exception in count method " + e.getCause());
             throw new TarantoolOperationException("count", e.getCause());
         }
     }
@@ -144,7 +134,7 @@ public class TarantoolRepository implements Repository {
 
         if (!(tupleObj instanceof List<?> tuple)) {
             throw new IllegalStateException("Unexpected tuple type: "
-                            + tupleObj.getClass().getName());
+                    + tupleObj.getClass().getName());
         }
 
         if (tuple.isEmpty()) {
