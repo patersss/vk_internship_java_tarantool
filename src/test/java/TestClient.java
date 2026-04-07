@@ -75,6 +75,10 @@ void main() {
             IO.println("  " + pair.getKey() + " -> " + v);
         }
 
+        stub.delete(Key.newBuilder().setKey("key_a").build());
+        stub.delete(Key.newBuilder().setKey("key_b").build());
+        stub.delete(Key.newBuilder().setKey("key_c").build());
+
         IO.println("RANGE PAGINATION TEST");
         for (int i = 0; i < 2500; i++) {
             stub.put(KeyValuePair.newBuilder()
@@ -96,9 +100,6 @@ void main() {
         IO.println("Range got: " + counter[0] + " records (expected 2500)");
 
         IO.println("CLEANUP");
-        stub.delete(Key.newBuilder().setKey("key_a").build());
-        stub.delete(Key.newBuilder().setKey("key_b").build());
-        stub.delete(Key.newBuilder().setKey("key_c").build());
         for (int i = 0; i < 2500; i++) {
             stub.delete(Key.newBuilder().setKey(String.format("range_%05d", i)).build());
         }

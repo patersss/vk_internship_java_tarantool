@@ -1,5 +1,17 @@
 services:
   grpc-service:
+      build: .
+      ports:
+        - "${GRPC_PORT:-8080}:${GRPC_PORT:-8080}"
+      environment:
+        GRPC_PORT: ${GRPC_PORT:-8080}
+        TARANTOOL_HOST: tarantool
+        TARANTOOL_PORT: ${TARANTOOL_PORT:-3301}
+        TARANTOOL_USERNAME: ${TARANTOOL_USERNAME}
+        TARANTOOL_PASSWORD: ${TARANTOOL_PASSWORD}
+      depends_on:
+        - tarantool
+      restart: on-failure
 
   tarantool:
     image: tarantool/tarantool:3.2.3
@@ -14,7 +26,7 @@ services:
       TARANTOOL_MEMORY: ${TARANTOOL_MEMORY}
       TARANTOOL_LOG_LEVEL: ${TARANTOOL_LOG_LEVEL}
     healthcheck:
-      test: [ "CMD", "tarantool", "-e", "require('net.box').connect('localhost:3301'):ping()" ]
+      test: [ "CMD-SHELL", "nc -z localhost 3301 || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 10
